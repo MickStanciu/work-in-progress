@@ -15,13 +15,13 @@ func TestFactory_StartWork(t *testing.T) {
 	factory := domain.NewFactory(cfg)
 	doneCh := make(chan bool)
 
-	factory.StartWork(doneCh)
 	for i := 0; i < 10; i++ {
 		job := domain.Job{
 			Id: fmt.Sprintf("ID_%d", i),
 		}
 		factory.RegisterJob(&job)
 	}
+	factory.StartWork(doneCh)
 
 	<-doneCh
 }

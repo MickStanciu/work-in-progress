@@ -23,6 +23,7 @@ type Factory struct {
 
 func (f *Factory) RegisterJob(j JobSvc) {
 	fmt.Printf("Factory RegisterJob %s\n", j.GetID())
+	f.jobQueue <- j
 }
 
 func (f *Factory) StartWork(doneChannel chan bool) {
@@ -30,11 +31,14 @@ func (f *Factory) StartWork(doneChannel chan bool) {
 	// todo: doneChannel
 	// todo: PickJob treat error
 
-	go func() {
-		job := <-f.jobQueue
-		worker := Worker{}
-		worker.PickJob(job)
-	}()
+	for job := range f.jobQueue {
+		fmt.Printf("selecting job %s\n", job.GetID())
+		go func(j JobSvc) {
+			worker := Worker{}
+			worker.PickJob(j)
+
+		}(job)
+	}
 }
 
 // FactoryConfig configuration for the Factory
