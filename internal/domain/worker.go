@@ -8,5 +8,5 @@ type Worker struct {
 
 func (w *Worker) PickJob(job JobSvc) error {
 	fmt.Printf("Worker pick job %s\n", job.GetID())
-	return nil
+	return job.Handle()
 }

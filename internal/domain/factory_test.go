@@ -18,6 +18,10 @@ func TestFactory_StartWork(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		job := domain.Job{
 			Id: fmt.Sprintf("ID_%d", i),
+			Exec: func() error {
+				fmt.Sprintf("...executing job id %d\n", i)
+				return nil
+			},
 		}
 		factory.RegisterJob(&job)
 	}

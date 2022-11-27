@@ -7,7 +7,8 @@ type JobSvc interface {
 
 // Job todo
 type Job struct {
-	Id string
+	Id   string
+	Exec func() error
 }
 
 func (j *Job) GetID() string {
@@ -15,5 +16,5 @@ func (j *Job) GetID() string {
 }
 
 func (j *Job) Handle() error {
-	return nil
+	return j.Exec()
 }
